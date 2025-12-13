@@ -137,15 +137,18 @@ public class FileSystem {
         DirectoryNode current = root;
 
         for (int i = 1; i < parts.length - 1; i++) {
-            final String part = parts[i];
+            String part = parts[i];
 
-            Optional<Node> found = current.getChildren().stream()
-                    .filter(n -> n.getName().equals(part) && n.isDirectory())
-                    .findFirst();
+            if (part.equals("root") || part.isEmpty()) continue; // <-- ADICIONE ISTO
 
-            if (found.isEmpty()) return null;
-            current = (DirectoryNode) found.get();
-        }
+                Optional<Node> found = current.getChildren().stream()
+                .filter(n -> n.getName().equals(part) && n.isDirectory())
+                .findFirst();
+
+        if (found.isEmpty()) return null;
+        current = (DirectoryNode) found.get();
+}
+
 
         String target = parts[parts.length - 1];
         return current.getChildren().stream()
